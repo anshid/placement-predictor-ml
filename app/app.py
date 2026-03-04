@@ -1,17 +1,14 @@
 from flask import Flask, request, render_template
 import os
-import joblib
-import numpy as np
+import sys
+
+# Add project root to Python path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
+
+from src.predict import predict_placement
 
 app = Flask(__name__)
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-model_path = os.path.join(BASE_DIR, "models", "model.pkl")
-scaler_path = os.path.join(BASE_DIR, "models", "scaler.pkl")
-
-model = joblib.load(model_path)
-scaler = joblib.load(scaler_path)
 
 
 @app.route("/")
@@ -25,15 +22,26 @@ def predict():
     cgpa = float(request.form["cgpa"])
     iq = float(request.form["iq"])
 
-    data = np.array([[cgpa, iq]])
+    try:
+        prediction, probability = predict_placement(cgpa, iq)
 
-    data = scaler.transform(data)
+        result = "Placement Likely" if prediction == 1 else "Placement Unlikely"
 
-    prediction = model.predict(data)
+        probability = round(probability * 100, 2)
 
-    result = "Placement Likely" if prediction[0] == 1 else "Placement Unlikely"
+        return render_template(
+            "index.html",
+            prediction=result,
+            probability=probability
+        )
 
-    return render_template("index.html", prediction=result)
+    except ValueError as e:
+
+        return render_template(
+            "index.html",
+            prediction=str(e),
+            probability=None
+        )
 
 
 if __name__ == "__main__":
