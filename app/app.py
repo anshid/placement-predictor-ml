@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import os
 import sys
 
@@ -16,23 +16,22 @@ def home():
     return render_template("index.html")
 
 
+# Web form prediction
 @app.route("/predict", methods=["POST"])
 def predict():
 
-    cgpa = float(request.form["cgpa"])
-    iq = float(request.form["iq"])
-
     try:
+        cgpa = float(request.form["cgpa"])
+        iq = float(request.form["iq"])
+
         prediction, probability = predict_placement(cgpa, iq)
 
         result = "Placement Likely" if prediction == 1 else "Placement Unlikely"
 
-        probability = round(probability * 100, 2)
-
         return render_template(
             "index.html",
             prediction=result,
-            probability=probability
+            probability=round(probability * 100, 2)
         )
 
     except ValueError as e:
@@ -42,6 +41,33 @@ def predict():
             prediction=str(e),
             probability=None
         )
+
+
+# JSON API prediction
+@app.route("/api/predict", methods=["POST"])
+def api_predict():
+
+    try:
+        data = request.get_json()
+
+        if not data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        cgpa = float(data.get("cgpa"))
+        iq = float(data.get("iq"))
+
+        prediction, probability = predict_placement(cgpa, iq)
+
+        result = "Placement Likely" if prediction == 1 else "Placement Unlikely"
+
+        return jsonify({
+            "prediction": result,
+            "probability": round(probability * 100, 2)
+        })
+
+    except ValueError as e:
+
+        return jsonify({"error": str(e)}), 400
 
 
 if __name__ == "__main__":
