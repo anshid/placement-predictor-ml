@@ -366,7 +366,7 @@ Possible extensions:
 
 Anshid
 
-Interested in building systems that combine **mathematical models with real-world applications**.
+Mathematician-turned-ML engineer, translating rigorous mathematical thinking into practical machine learning systems and intelligent software. Interested in building systems that combine **mathematical models with real-world applications**.
 
 _Note: Project idea is from CampusX (https://www.youtube.com/watch?v=dr7z7a_8lQw)_
 
