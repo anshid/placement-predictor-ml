@@ -4,7 +4,7 @@ An end-to-end Machine Learning project that predicts whether a student will get 
 
 The project demonstrates the **complete ML lifecycle**, including data cleaning, exploratory data analysis, model training, inference pipeline creation, API development, and deployment.
 
-Note: Project idea is from CampusX (https://www.youtube.com/watch?v=dr7z7a_8lQw)
+
 ---
 
 ## Live Demo
@@ -366,4 +366,7 @@ Anshid
 
 Interested in building systems that combine **mathematical models with real-world applications**.
 
+_Note: Project idea is from CampusX (https://www.youtube.com/watch?v=dr7z7a_8lQw)_
+
 ---
+
