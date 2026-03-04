@@ -230,6 +230,8 @@ Placed vs Not Placed
 
 in feature space.
 
+![Decision Boundary](assets/decision_boundary.png)
+
 ---
 
 # Project Structure
